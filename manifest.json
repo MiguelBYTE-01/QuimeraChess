@@ -1,0 +1,68 @@
+{
+  "manifest_version": 3,
+  "name": "Quimera Chess",
+  "version": "1.18.3",
+  "description": "Analyze chess positions with powerful AI engines and visualize best moves as arrows on the board. Supports Chess.com and Lichess.",
+  "permissions": [
+    "offscreen",
+    "storage",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.chess.com/*",
+        "*://*.lichess.org/*"
+      ],
+      "js": [
+        "content/board-detector.js",
+        "content/arrow-renderer.js",
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "commands": {
+    "toggle-analysis": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
+      },
+      "description": "Toggle analysis on/off"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "stockfish/stockfish-nnue-16-single.js",
+        "stockfish/stockfish-nnue-16-single.wasm",
+        "stockfish/nn-5af11540bbfe.nnue",
+        "stockfish/stockfish-18-lite-single.js",
+        "stockfish/stockfish-18-lite-single.wasm"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
